@@ -1,5 +1,12 @@
 name: Run playwright tests against stage
-on: [push]
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+  push:
+    branches:
+      - main
 
 concurrency:
   group: integration-group # ${{ github.workflow }}-${{ github.ref }}
