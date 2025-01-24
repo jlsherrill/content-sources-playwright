@@ -1,0 +1,21 @@
+{
+  "name": "content-sources-playwright",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "test": "yarn install && yarn playwright install && yarn playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "github-actions-ctrf": "^0.0.58",
+    "playwright-ctrf-json-reporter": "^0.0.18"
+  }
+}
