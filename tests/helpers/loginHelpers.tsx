@@ -48,23 +48,12 @@ export const logInWithUsernameAndPassword = async (
   const passwordField = page.getByRole("textbox", { name: "Password" });
   await passwordField.fill(password);
   await passwordField.press("Enter");
-  //   await page.waitForResponse(
-  //     (resp) =>
-  //       resp
-  //         .url()
-  //         .includes(
-  //           "/auth/realms/redhat-external/protocol/openid-connect/token"
-  //         ) && resp.status() === 200
-  //   );
+
   await expect(async () => {
     expect(page.url()).toBe(
       `${process.env.BASE_URL}/insights/content/repositories`
     );
   }).toPass();
-
-  //   await expect(
-  //     page.locator("button > span.pf-v5-c-menu-toggle__icon")
-  //   ).toBeVisible();
 };
 
 export const logInWithUser1 = async (page: Page) =>
@@ -73,15 +62,6 @@ export const logInWithUser1 = async (page: Page) =>
     process.env.USER1USERNAME,
     process.env.USER1PASSWORD
   );
-
-export const convertProxyToPlaywrightFormat = (proxyUrl: string) => {
-  const url = new URL(proxyUrl);
-  return {
-    server: `${url.protocol}//${url.host}`,
-    // username: url.username,
-    // password: url.password
-  };
-};
 
 export const storeStorageStateAndToken = async (page: Page) => {
   const { cookies } = await page
@@ -95,9 +75,10 @@ export const storeStorageStateAndToken = async (page: Page) => {
 
 export const closePopupsIfExist = async (page: Page) => {
   const locatorsToCheck = [
-    page.locator(`button[id^="pendo-close-guide-"]`),
-    page.locator(`button[id="truste-consent-button"]`),
-    page.getByLabel("close-notification"),
+    page.locator(".pf-v5-c-alert.notification-item button"), // This closes all toast pop-ups
+    page.locator(`button[id^="pendo-close-guide-"]`), // This closes the pendo guide pop-up
+    page.locator(`button[id="truste-consent-button"]`), // This closes the trusted consent pup-up
+    page.getByLabel("close-notification"), // This closes a one off info notification (May be covered by the toast above, needs recheck.)
   ];
 
   for (const locator of locatorsToCheck) {
@@ -108,12 +89,7 @@ export const closePopupsIfExist = async (page: Page) => {
 };
 
 export const throwIfMissingEnvVariables = () => {
-  const ManditoryEnvVariables = [
-    "USER1USERNAME",
-    "USER1PASSWORD",
-    "BASE_URL",
-    "PROXY",
-  ];
+  const ManditoryEnvVariables = ["USER1USERNAME", "USER1PASSWORD", "BASE_URL"];
 
   const missing: string[] = [];
   ManditoryEnvVariables.forEach((envVar) => {

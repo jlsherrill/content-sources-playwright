@@ -4,6 +4,8 @@ node_modules/
 /playwright-ctrf/
 /blob-report/
 /playwright/.cache/
+/tests/API
+/tests/UI
 .env
 .auth
 bin

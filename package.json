@@ -7,11 +7,12 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "test": "yarn install && yarn playwright install && yarn playwright test"
+    "test": "yarn install && yarn playwright install && yarn playwright test",
+    "get-tests": ".github/workflowScripts/getFrontendTests.sh && .github/workflowScripts/getBackendTests.sh"
   },
   "devDependencies": {
     "@playwright/test": "^1.49.1",
-    "@types/node": "^22.10.2"
+    "@types/node": "^22.9.0"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
