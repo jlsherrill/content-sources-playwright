@@ -90,6 +90,7 @@ export const closePopupsIfExist = async (page: Page) => {
 
 export const throwIfMissingEnvVariables = () => {
   const ManditoryEnvVariables = ["USER1USERNAME", "USER1PASSWORD", "BASE_URL"];
+  if (!!process.env.PROXY) ManditoryEnvVariables.push("PROXY");
 
   const missing: string[] = [];
   ManditoryEnvVariables.forEach((envVar) => {
@@ -100,5 +101,11 @@ export const throwIfMissingEnvVariables = () => {
 
   if (missing.length > 0) {
     throw new Error("Missing env variables:" + missing.join(","));
+  }
+
+  if (process.env.PROXY && process.env.BASE_URL?.includes("stage.foo.redhat")) {
+    throw new Error(
+      "If testing against a local machine you need to unset '' your proxy in the .env file!"
+    );
   }
 };
