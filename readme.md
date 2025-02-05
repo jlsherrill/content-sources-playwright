@@ -20,13 +20,21 @@ For local testing, make sure your front-end/backend servers are running and acce
 
 - Ensure you do NOT specify a proxy in your .env file (put an empty value: "")
 - Make sure your .env's BASE_URL is pointed to the local front-end server "https://stage.foo.redhat.com:1337"
+- USER1USERNAME="<YOUR_STAGE_QE_USER>"
+- USER1PASSWORD="<YOUR_STAGE_QE_USER_PASSWORD>"
 
-# Option 2 Run local:
+Note: For Ethel, your user will require the following skus: MCT4022,MCT3718,MCT3695,ES0113909
+
+# Option 2 Run against stage:
 
 For local stage testing, make sure the following:
 
 - PROXY must be set correctly in your .env file.
 - Make sure your .env's BASE_URL is pointed to the targeted env, if targeting PROD, the proxy is not needed.
+- USER1USERNAME="<YOUR_STAGE_QE_USER>"
+- USER1PASSWORD="<YOUR_STAGE_QE_USER_PASSWORD>"
+
+Note: For Ethel, your user will require the following skus: MCT4022,MCT3718,MCT3695,ES0113909
 
 # Run your tests:
 
