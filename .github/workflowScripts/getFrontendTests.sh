@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Variables
-REPO_URL="https://github.com/Andrewgdewar/content-sources-frontend.git"
-BRANCH="HMS-5287"
-FOLDER_PATH="_playwright-tests/UI"
-LOCAL_DIR="tests/"
+REPO_URL="https://github.com/content-services/content-sources-frontend.git"
+BRANCH="main"
+FOLDER_PATH="UI"
+LOCAL_DIR="tests"
 
 # Create a temporary directory
 TEMP_DIR=$(mktemp -d)
@@ -16,8 +16,7 @@ rm -rf $LOCAL_DIR/$FOLDER_PATH
 git clone --branch $BRANCH $REPO_URL $TEMP_DIR
 
 # Copy the specific folder to the local directory
-mkdir -p $LOCAL_DIR
-cp -r $TEMP_DIR/$FOLDER_PATH $LOCAL_DIR
+cp -r $TEMP_DIR/_playwright-tests/$FOLDER_PATH $LOCAL_DIR
 
 # Clean up the temporary directory
 rm -rf $TEMP_DIR
