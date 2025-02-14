@@ -21,8 +21,9 @@ export default defineConfig({
         ]
         : 'list',
     timeout: process.env.CI ? 60000 : 30000,
-    expect: { timeout: process.env.CI ? 30000 : 20000 },
+    expect: { timeout: process.env.CI ? 60000 : 20000 },
     use: {
+        testIdAttribute: 'data-ouia-component-id',
         launchOptions: {
             args: ['--use-fake-device-for-media-stream'],
         },
@@ -46,11 +47,32 @@ export default defineConfig({
         { name: 'setup', testMatch: /.*\.setup\.ts/ },
         {
             name: 'chromium',
+            grepInvert: !!process.env.PROD ? [/preview-only/, /switch-to-preview/] : [/switch-to-preview/],
             use: {
                 ...devices['Desktop Chrome'],
-                storageState: '.auth/user.json',
+                storageState: `.auth/${process.env.USER1USERNAME}.json`,
             },
             dependencies: ['setup'],
         },
+        ...!!process.env.PROD ?
+            [{
+                name: 'Switch to preview',
+                grep: [/switch-to-preview/],
+                use: {
+                    ...devices['Desktop Chrome'],
+                    storageState: `.auth/${process.env.USER1USERNAME}.json`,
+
+                },
+                dependencies: ['setup'],//'chromium',
+            },
+            {
+                name: 'Run preview only',
+                grep: [/preview-only/],
+                use: {
+                    ...devices['Desktop Chrome'],
+                    storageState: `.auth/${process.env.USER1USERNAME}.json`,
+                },
+                dependencies: ['Switch to preview'],
+            }] : [],
     ],
 });

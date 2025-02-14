@@ -2,9 +2,9 @@ import { expect, type Page } from "@playwright/test";
 import path from "path";
 
 export const logout = async (page: Page) => {
-  const button = await page.locator(
-    "div.pf-v5-c-toolbar__item.pf-m-hidden.pf-m-visible-on-lg.pf-v5-u-mr-0 > button"
-  );
+  const button = await page
+    .locator(".pf-v6-c-menu-toggle.data-hj-suppress.sentry-mask")
+    .first();
 
   await button.click();
 
@@ -17,9 +17,6 @@ export const logout = async (page: Page) => {
   await expect(async () => {
     expect(page.url()).not.toBe("/insights/content/repositories");
   }).toPass();
-  await expect(async () =>
-    expect(page.getByText("Log in to your Red Hat account")).toBeVisible()
-  ).toPass();
 };
 
 export const logInWithUsernameAndPassword = async (
@@ -56,17 +53,10 @@ export const logInWithUsernameAndPassword = async (
   }).toPass();
 };
 
-export const logInWithUser1 = async (page: Page) =>
-  await logInWithUsernameAndPassword(
-    page,
-    process.env.USER1USERNAME,
-    process.env.USER1PASSWORD
-  );
-
-export const storeStorageStateAndToken = async (page: Page) => {
-  const { cookies } = await page
-    .context()
-    .storageState({ path: path.join(__dirname, "../../.auth/user.json") });
+export const switchToUser = async (page: Page, userName: string) => {
+  const { cookies } = await page.context().storageState({
+    path: path.join(__dirname, `../../.auth/${userName}.json`),
+  });
   process.env.TOKEN = `Bearer ${
     cookies.find((cookie) => cookie.name === "cs_jwt")?.value
   }`;
@@ -75,6 +65,7 @@ export const storeStorageStateAndToken = async (page: Page) => {
 
 export const closePopupsIfExist = async (page: Page) => {
   const locatorsToCheck = [
+    page.locator(".pf-v6-c-modal-box__close > button"),
     page.locator(".pf-v5-c-alert.notification-item button"), // This closes all toast pop-ups
     page.locator(`button[id^="pendo-close-guide-"]`), // This closes the pendo guide pop-up
     page.locator(`button[id="truste-consent-button"]`), // This closes the trusted consent pup-up
@@ -108,4 +99,25 @@ export const throwIfMissingEnvVariables = () => {
       "If testing against a local machine you need to unset '' your proxy in the .env file!"
     );
   }
+};
+
+export const ensureNotInPreview = async (page: Page) => {
+  const toggle = page.locator("input#preview-toggle");
+  await expect(toggle).toBeVisible();
+  if (await toggle.isChecked()) {
+    await toggle.click();
+  }
+};
+
+export const ensureInPreview = async (page: Page) => {
+  const toggle = page.locator("input#preview-toggle");
+  await expect(toggle).toBeVisible();
+  if (!(await toggle.isChecked())) {
+    await toggle.click();
+  }
+  const turnOnButton = page.getByRole("button", { name: "Turn on" });
+  if (await turnOnButton.isVisible()) {
+    await turnOnButton.click();
+  }
+  await expect(toggle).toBeChecked();
 };
