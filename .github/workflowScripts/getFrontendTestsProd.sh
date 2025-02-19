@@ -53,7 +53,7 @@ rm $yaml_file
 REPO_URL="https://github.com/content-services/content-sources-frontend.git"
 FOLDER_PATH="UI"
 LOCAL_DIR="tests"
-
+rm -rf $TEMP_DIR
 # Create a temporary directory
 TEMP_DIR=./temp_frontend
 mkdir $TEMP_DIR

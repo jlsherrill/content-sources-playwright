@@ -80,8 +80,14 @@ export const closePopupsIfExist = async (page: Page) => {
 };
 
 export const throwIfMissingEnvVariables = () => {
-  const ManditoryEnvVariables = ["USER1USERNAME", "USER1PASSWORD", "BASE_URL"];
-  if (!!process.env.PROXY) ManditoryEnvVariables.push("PROXY");
+  const ManditoryEnvVariables = [
+    "USER1USERNAME",
+    "USER1PASSWORD",
+    "BASE_URL",
+    "PROXY",
+  ];
+
+  if (!process.env.PROD) ManditoryEnvVariables.push("PROXY");
 
   const missing: string[] = [];
   ManditoryEnvVariables.forEach((envVar) => {
