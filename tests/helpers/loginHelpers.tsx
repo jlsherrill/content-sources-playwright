@@ -108,7 +108,7 @@ export const throwIfMissingEnvVariables = () => {
 };
 
 export const ensureNotInPreview = async (page: Page) => {
-  const toggle = page.locator("input#preview-toggle");
+  const toggle = page.locator(".pf-v6-c-switch__toggle");
   await expect(toggle).toBeVisible();
   if (await toggle.isChecked()) {
     await toggle.click();
@@ -116,7 +116,7 @@ export const ensureNotInPreview = async (page: Page) => {
 };
 
 export const ensureInPreview = async (page: Page) => {
-  const toggle = page.locator("input#preview-toggle");
+  const toggle = page.locator(".pf-v6-c-switch__toggle");
   await expect(toggle).toBeVisible();
   if (!(await toggle.isChecked())) {
     await toggle.click();
