@@ -63,6 +63,9 @@ jobs:
         run: yarn playwright install --with-deps
 
       - name: Run Playwright tests
+        env:
+          CURRENTS_PROJECT_ID: ${{ secrets.CURRENTS_PROJECT_ID }}
+          CURRENTS_RECORD_KEY: ${{ secrets.CURRENTS_RECORD_KEY }}
         run: yarn playwright test
 
       - name: Publish Test Report
