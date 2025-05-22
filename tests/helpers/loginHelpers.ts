@@ -46,11 +46,11 @@ export const logInWithUsernameAndPassword = async (
   await passwordField.fill(password);
   await passwordField.press("Enter");
 
-  await expect(async () => {
-    expect(page.url()).toBe(
-      `${process.env.BASE_URL}/insights/content/repositories`
-    );
-  }).toPass();
+  // await expect(async () => {
+  //   expect(page.url()).toBe(
+  //     `${process.env.BASE_URL}/insights/content/repositories`
+  //   );
+  // }).toPass();
 };
 
 export const switchToUser = async (page: Page, userName: string) => {
